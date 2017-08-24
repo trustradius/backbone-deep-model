@@ -102,6 +102,14 @@
             } else {
                 //Create the child object if it doesn't exist, or isn't an object
                 if (typeof result[field] === 'undefined' || ! _.isObject(result[field])) {
+                    // If trying to remove a field that doesn't exist, then there's no need
+                    // to create its missing parent (doing so causes a problem with
+                    // hasChanged()).
+                    if (options.unset) {
+                        delete result[field];
+                        return;
+                    }
+
                     result[field] = {};
                 }
 
